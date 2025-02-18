@@ -1,0 +1,491 @@
+{
+	"info": {
+		"_postman_id": "e56d12d5-f32b-4cfb-a013-afd8698f81b6",
+		"name": "Toll Management API & Charts Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41986264"
+	},
+	"item": [
+		{
+			"name": "Charges By API (JSON)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/chargesBy/{{tollOpID}}/{{date_from}}/{{date_to}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"chargesBy",
+						"{{tollOpID}}",
+						"{{date_from}}",
+						"{{date_to}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Charges By API (CSV)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is CSV\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/csv\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/chargesBy/{{tollOpID}}/{{date_from}}/{{date_to}}?format=csv",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"chargesBy",
+						"{{tollOpID}}",
+						"{{date_from}}",
+						"{{date_to}}"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "csv"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pass Analysis API (JSON)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/passAnalysis/{{stationOpID}}/{{tagOpID}}/{{date_from}}/{{date_to}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"passAnalysis",
+						"{{stationOpID}}",
+						"{{tagOpID}}",
+						"{{date_from}}",
+						"{{date_to}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pass Analysis API (CSV)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is CSV\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/csv\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/passAnalysis/{{stationOpID}}/{{tagOpID}}/{{date_from}}/{{date_to}}?format=csv",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"passAnalysis",
+						"{{stationOpID}}",
+						"{{tagOpID}}",
+						"{{date_from}}",
+						"{{date_to}}"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "csv"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Toll Station Passes API (JSON)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/tollStationPasses/{{tollStationID}}/{{date_from}}/{{date_to}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"tollStationPasses",
+						"{{tollStationID}}",
+						"{{date_from}}",
+						"{{date_to}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Passes Cost API (JSON)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/passesCost/{{tollOpID}}/{{tagOpID}}/{{date_from}}/{{date_to}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"passesCost",
+						"{{tollOpID}}",
+						"{{tagOpID}}",
+						"{{date_from}}",
+						"{{date_to}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Operator Expenditures Chart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is HTML\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"html\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/operator_expenditures",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"operator_expenditures"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Toll Traffic Chart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is HTML\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"html\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/toll_traffic",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"toll_traffic"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Toll Traffic Heatmap Chart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is HTML\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"html\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/toll_traffic_heatmap",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"toll_traffic_heatmap"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Money Spent Chart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is HTML\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"html\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/money_spent",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"money_spent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Revenues by Vehicle Type Chart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is HTML\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"html\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/revenues_by_vehicle_type",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"revenues_by_vehicle_type"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Top 3 Roads by Passes Chart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response is HTML\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"html\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/top3_roads_by_passes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"top3_roads_by_passes"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://127.0.0.1:9115"
+		},
+		{
+			"key": "tollOpID",
+			"value": "1"
+		},
+		{
+			"key": "tagOpID",
+			"value": "2"
+		},
+		{
+			"key": "stationOpID",
+			"value": "1"
+		},
+		{
+			"key": "tollStationID",
+			"value": "TS001"
+		},
+		{
+			"key": "date_from",
+			"value": "2022-01-01"
+		},
+		{
+			"key": "date_to",
+			"value": "2022-01-31"
+		}
+	]
+}

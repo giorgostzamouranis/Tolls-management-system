@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Admin CLI{% endblock %}
+
+{% block content %}
+<h1>Admin CLI Access</h1>
+<p>Welcome, {{ session.get('username') }}! Use the CLI commands below:</p>
+
+<div>
+    <pre>
+        <strong>Example Commands:</strong>
+        - se24xx resetpasses
+        - se24xx addpasses --source [filepath]
+        - se24xx tollstationpasses --station [stationID] --from [datefrom] --to [dateto] --format [json/csv]
+    </pre>
+    <form id="cli-form" onsubmit="event.preventDefault(); executeCLI();">
+        <label for="cli-command">Enter Command:</label><br>
+        <input type="text" id="cli-command" placeholder="Type your CLI command here..." style="width: 100%; padding: 10px; margin-top: 10px;" required><br><br>
+        <button type="submit" style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; cursor: pointer;">Execute Command</button>
+    </form>
+</div>
+
+<h2>Result:</h2>
+<div id="cli-result" style="background: #f4f4f9; border: 1px solid #ccc; padding: 10px; margin-top: 20px;"></div>
+
+<script>
+    async function executeCLI() {
+        const command = document.getElementById('cli-command').value;
+        try {
+            const response = await fetch('/api/cli', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ command }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error executing command');
+            }
+
+            const data = await response.json();
+            document.getElementById('cli-result').innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
+        } catch (error) {
+            document.getElementById('cli-result').innerHTML = `<p style="color: red;">${error.message}</p>`;
+        }
+    }
+</script>
+{% endblock %}

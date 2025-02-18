@@ -1,0 +1,134 @@
+<!-- front-end/templates/toll_traffic_heatmap.html -->
+{% extends "base.html" %}
+
+{% block title %}Toll Traffic Heatmap{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card form-card">
+    <h2>Toll Traffic Heatmap</h2>
+    
+    {% if error %}
+      <div class="alert">{{ error }}</div>
+    {% endif %}
+    
+    <form method="post">
+      <div class="form-group">
+        <label for="toll_station_name">Toll Station</label>
+        <select id="toll_station_name" name="toll_station_name" required>
+          <option value="" disabled selected>Select a Toll Station</option>
+          {% for station in toll_stations %}
+            <option value="{{ station }}">{{ station }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="month_name">Month</label>
+        <select id="month_name" name="month_name" required>
+          <option value="" disabled selected>Select a Month</option>
+          <option value="January">January</option>
+          <option value="February">February</option>
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="year">Year (e.g., 2022)</label>
+        <input type="text" id="year" name="year" placeholder="2022" required>
+      </div>
+      
+      <button type="submit" class="btn">Generate Heatmap</button>
+    </form>
+  </div>
+
+  {% if image %}
+    <div class="card chart-card">
+      <h3>Generated Heatmap</h3>
+      <img src="data:image/png;base64,{{ image }}" alt="Toll Traffic Heatmap">
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+  .form-card h2, .chart-card h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007BFF;
+  }
+  .alert {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  input[type="text"], select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input[type="text"]:focus, select:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    outline: none;
+  }
+  .btn {
+    padding: 12px;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  .chart-card img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+</style>
+{% endblock %}

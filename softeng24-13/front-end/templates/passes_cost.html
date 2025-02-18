@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Passes Cost{% endblock %}
+
+{% block content %}
+<h1>Passes Cost</h1>
+
+<form onsubmit="event.preventDefault(); fetchPassesCost();">
+    <label for="tollOpID">Toll Operator ID:</label>
+    <input type="text" id="tollOpID" name="tollOpID" required><br><br>
+
+    <label for="tagOpID">Tag Operator ID:</label>
+    <input type="text" id="tagOpID" name="tagOpID" required><br><br>
+
+    <label for="dateFrom">Date From (YYYY-MM-DD):</label>
+    <input type="date" id="dateFrom" name="dateFrom" required><br><br>
+
+    <label for="dateTo">Date To (YYYY-MM-DD):</label>
+    <input type="date" id="dateTo" name="dateTo" required><br><br>
+
+    <label for="format">Format:</label>
+    <select id="format" name="format">
+        <option value="json">JSON</option>
+        <option value="csv">CSV</option>
+    </select><br><br>
+
+    <button type="submit">Fetch Passes Cost</button>
+</form>
+
+<h2>Result:</h2>
+<div id="result"></div>
+
+<script>
+    async function fetchPassesCost() {
+        const tollOpID = document.getElementById('tollOpID').value;
+        const tagOpID = document.getElementById('tagOpID').value;
+        const dateFrom = document.getElementById('dateFrom').value;
+        const dateTo = document.getElementById('dateTo').value;
+        const format = document.getElementById('format').value;
+
+        try {
+            const response = await fetch(`/api/passesCost/${tollOpID}/${tagOpID}/${dateFrom}/${dateTo}?format=${format}`);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            if (format === 'csv') {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `passes_cost_${tollOpID}_${tagOpID}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            } else {
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
+            }
+        } catch (error) {
+            document.getElementById('result').innerHTML = `<p style="color: red;">${error.message}</p>`;
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,467 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Toll Management API",
+    "version": "1.0.0",
+    "description": "API for toll station management."
+  },
+  "servers": [
+    {
+      "url": "https://{host}:9115/api",
+      "variables": {
+        "host": {
+          "default": "localhost"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "User login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "summary": "User logout",
+        "parameters": [
+          {
+            "name": "X-OBSERVATORY-AUTH",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout successful"
+          }
+        }
+      }
+    },
+    "/tollStationPasses/{tollStationID}/{date_from}/{date_to}": {
+      "get": {
+        "summary": "Retrieve toll station passes",
+        "parameters": [
+          {
+            "name": "tollStationID",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "date_from",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "date_to",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "json",
+                "csv"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stationID": { "type": "string" },
+                    "stationOperator": { "type": "string" },
+                    "requestTimestamp": { "type": "string" },
+                    "periodFrom": { "type": "string" },
+                    "periodTo": { "type": "string" },
+                    "nPasses": { "type": "integer" },
+                    "passList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "passIndex": { "type": "integer" },
+                          "passID": { "type": "string" },
+                          "stationID": { "type": "string" },
+                          "timestamp": { "type": "string" },
+                          "tagProvider": { "type": "string" },
+                          "passType": {
+                            "type": "string",
+                            "enum": [
+                              "home",
+                              "visitor"
+                            ]
+                          },
+                          "passCharge": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/passAnalysis/{stationOpID}/{tagOpID}/{date_from}/{date_to}": {
+      "get": {
+        "summary": "Pass analysis between operators",
+        "parameters": [
+          {
+            "name": "stationOpID",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "tagOpID",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "date_from",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "date_to",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stationOpID": { "type": "string" },
+                    "tagOpID": { "type": "string" },
+                    "requestTimestamp": { "type": "string" },
+                    "periodFrom": { "type": "string" },
+                    "periodTo": { "type": "string" },
+                    "nPasses": { "type": "integer" },
+                    "passList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "passIndex": { "type": "integer" },
+                          "passID": { "type": "string" },
+                          "stationID": { "type": "string" },
+                          "timestamp": { "type": "string" },
+                          "tagID": { "type": "string" },
+                          "passCharge": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/passesCost/{tollOpID}/{tagOpID}/{date_from}/{date_to}": {
+      "get": {
+        "summary": "Passes cost between operators",
+        "parameters": [
+          {
+            "name": "tollOpID",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "tagOpID",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "date_from",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "date_to",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tollOpID": { "type": "string" },
+                    "tagOpID": { "type": "string" },
+                    "requestTimestamp": { "type": "string" },
+                    "periodFrom": { "type": "string" },
+                    "periodTo": { "type": "string" },
+                    "nPasses": { "type": "integer" },
+                    "passesCost": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chargesBy/{tollOpID}/{date_from}/{date_to}": {
+      "get": {
+        "summary": "Charges by operator",
+        "parameters": [
+          {
+            "name": "tollOpID",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "date_from",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "date_to",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tollOpID": { "type": "string" },
+                    "requestTimestamp": { "type": "string" },
+                    "periodFrom": { "type": "string" },
+                    "periodTo": { "type": "string" },
+                    "vOpList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "visitingOpID": { "type": "string" },
+                          "nPasses": { "type": "integer" },
+                          "passesCost": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/healthcheck": {
+      "get": {
+        "summary": "Check API health",
+        "responses": {
+          "200": {
+            "description": "API is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "dbconnection": { "type": "string" },
+                    "n_stations": { "type": "integer" },
+                    "n_tags": { "type": "integer" },
+                    "n_passes": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized or database error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "dbconnection": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/resetstations": {
+      "post": {
+        "summary": "Reset stations",
+        "responses": {
+          "200": {
+            "description": "Stations reset successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Stations reset failed or unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "info": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/resetpasses": {
+      "post": {
+        "summary": "Reset passes",
+        "responses": {
+          "200": {
+            "description": "Passes reset successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Passes reset failed or unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "info": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/addpasses": {
+      "post": {
+        "summary": "Add passes",
+        "responses": {
+          "200": {
+            "description": "Passes added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Add passes failed or unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "info": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

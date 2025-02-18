@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Toll Station Passes{% endblock %}
+
+{% block content %}
+<h1>Toll Station Passes</h1>
+
+<form onsubmit="event.preventDefault(); fetchPasses();">
+    <label for="tollStationID">Toll Station ID:</label>
+    <input type="text" id="tollStationID" name="tollStationID" required><br><br>
+
+    <label for="dateFrom">Date From (YYYY-MM-DD):</label>
+    <input type="date" id="dateFrom" name="dateFrom" required><br><br>
+
+    <label for="dateTo">Date To (YYYY-MM-DD):</label>
+    <input type="date" id="dateTo" name="dateTo" required><br><br>
+
+    <label for="format">Format:</label>
+    <select id="format" name="format">
+        <option value="json">JSON</option>
+        <option value="csv">CSV</option>
+    </select><br><br>
+
+    <button type="submit">Fetch Passes</button>
+</form>
+
+<h2>Result:</h2>
+<div id="result"></div>
+
+<script>
+    async function fetchPasses() {
+        const tollStationID = document.getElementById('tollStationID').value;
+        const dateFrom = document.getElementById('dateFrom').value;
+        const dateTo = document.getElementById('dateTo').value;
+        const format = document.getElementById('format').value;
+
+        try {
+            const response = await fetch(`/api/tollStationPasses/${tollStationID}/${dateFrom}/${dateTo}?format=${format}`);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            if (format === 'csv') {
+                // Download the CSV file
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `toll_station_passes_${tollStationID}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            } else {
+                // Display JSON result
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<pre>${JSON.stringify(data, null, 4)}</pre>`;
+            }
+        } catch (error) {
+            document.getElementById('result').innerHTML = `<p style="color: red;">${error.message}</p>`;
+        }
+    }
+</script>
+{% endblock %}

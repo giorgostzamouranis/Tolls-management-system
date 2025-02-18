@@ -1,0 +1,120 @@
+<!-- front-end/templates/top3_roads_by_passes.html -->
+{% extends "base.html" %}
+
+{% block title %}Top 3 Roads by Passes{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card form-card">
+    <h2>Top 3 Roads by Passes</h2>
+    
+    {% if error %}
+      <div class="alert">{{ error }}</div>
+    {% endif %}
+    
+    <form method="post">
+      <div class="form-group">
+        <label for="operator_name">Operator</label>
+        <select id="operator_name" name="operator_name" required>
+          <option value="" disabled selected>Select an Operator</option>
+          {% for op in operators %}
+            <option value="{{ op }}">{{ op }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="start_date">Start Date (YYYY-MM-DD)</label>
+        <input type="text" id="start_date" name="start_date" placeholder="2022-01-01" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="end_date">End Date (YYYY-MM-DD)</label>
+        <input type="text" id="end_date" name="end_date" placeholder="2022-01-25" required>
+      </div>
+      
+      <button type="submit" class="btn">Generate Chart</button>
+    </form>
+  </div>
+  
+  {% if image %}
+    <div class="card chart-card">
+      <h3>Generated Chart</h3>
+      <img src="data:image/png;base64,{{ image }}" alt="Top 3 Roads by Passes Chart">
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+  }
+  .form-card h2, .chart-card h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007BFF;
+  }
+  .alert {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  input[type="text"], select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input[type="text"]:focus, select:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    outline: none;
+  }
+  .btn {
+    padding: 12px;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  .chart-card img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+</style>
+{% endblock %}

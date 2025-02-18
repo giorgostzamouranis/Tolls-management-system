@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Toll Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            padding: 10px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a, nav form button {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 0 5px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav form button:hover {
+            background-color: #0056b3;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #007BFF;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #0056b3;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Toll Management System</h1>
+        <nav>
+            <a href="{{ url_for('home.home') }}">Home</a>
+
+            <!-- Services Dropdown -->
+            <div class="dropdown">
+                <a href="#">Services ▼</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('toll_station_passes.toll_station_passes_page') }}">Toll Station Passes</a>
+                    <a href="{{ url_for('pass_analysis_site_bp.pass_analysis_page') }}">Pass Analysis</a>
+                    <a href="{{ url_for('passes_cost_site_bp.passes_cost_page') }}">Passes Cost</a>
+                    <a href="{{ url_for('charges_by_site_bp.charges_by_page') }}">Charges By</a>
+                    <a href="{{ url_for('debts.debts') }}">Setoff</a>
+                    <a href="{{ url_for('stats.statistics') }}">Statistics</a>
+                </div>
+            </div>
+
+            {% if session.get('user_token') %}
+                <span>Welcome, {{ session.get('username') }}</span>
+                <form action="{{ url_for('auth.logout') }}" method="POST" style="display: inline;">
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('auth.login_page') }}">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% if not session.get('user_token') %}
+            <!-- Redirect to login if not logged in -->
+            <script>
+                window.location.href = "{{ url_for('auth.login_page') }}";
+            </script>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Toll Management System</p>
+    </footer>
+</body>
+</html>

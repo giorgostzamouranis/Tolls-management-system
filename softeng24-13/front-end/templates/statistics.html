@@ -1,0 +1,103 @@
+<!-- front-end/templates/statistics.html -->
+{% extends "base.html" %}
+
+{% block title %}Statistics Dashboard{% endblock %}
+
+{% block content %}
+  <div class="statistics-container">
+    <h2>Statistics Dashboard</h2>
+    <p>Select the chart you want to view:</p>
+    <div class="card-grid">
+      
+      <div class="card">
+        <a href="{{ url_for('charts.operator_expenditures') }}">
+          <h3>Operator Expenditures</h3>
+        </a>
+        <p>Explore spending data by operator in a pie chart format.</p>
+      </div>
+      
+      <div class="card">
+        <a href="{{ url_for('charts.toll_traffic') }}">
+          <h3>Toll Traffic Line Chart</h3>
+        </a>
+        <p>Analyze hourly toll traffic using a line chart.</p>
+      </div>
+      
+      <div class="card">
+        <a href="{{ url_for('charts.toll_traffic_heatmap') }}">
+          <h3>Toll Traffic Heatmap</h3>
+        </a>
+        <p>Visualize traffic patterns with an intuitive heatmap.</p>
+      </div>
+      
+      <div class="card">
+        <a href="{{ url_for('charts.money_spent') }}">
+          <h3>Daily Money Spent</h3>
+        </a>
+        <p>Review daily revenue trends through a bar chart.</p>
+      </div>
+      
+      <div class="card">
+        <a href="{{ url_for('charts.revenues_by_vehicle_type') }}">
+          <h3>Revenues by Vehicle Type</h3>
+        </a>
+        <p>Compare revenue contributions across different vehicle types.</p>
+      </div>
+      
+      <div class="card">
+        <a href="{{ url_for('charts.top3_roads_by_passes') }}">
+          <h3>Top 3 Roads by Passes</h3>
+        </a>
+        <p>Identify the busiest roads with the most passes.</p>
+      </div>
+      
+    </div>
+  </div>
+
+  <style>
+    /* Container for the statistics page */
+    .statistics-container {
+      text-align: center;
+      padding: 30px 20px;
+    }
+    
+    /* Grid layout for the cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    
+    /* Styling for each card */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .card h3 {
+      margin-top: 0;
+      color: #007BFF;
+      font-size: 1.4em;
+    }
+    
+    .card p {
+      color: #555;
+      font-size: 0.95em;
+      margin-top: 10px;
+    }
+    
+    .card a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
+{% endblock %}
