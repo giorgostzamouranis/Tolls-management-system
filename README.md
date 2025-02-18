@@ -60,10 +60,10 @@ Execute "pip install -r requirements.txt" to install all the libraries.
 - *git* (optional, for cloning the repository)
 
 ## Creators  
-- Katsaidonis Nikolaos  
-- Katsiadramis Kyriakos  
+- Katsaidonis Nikolaos https://github.com/NikosK10
+- Katsiadramis Kyriakos https://github.com/kyriakoskat  
 - Tzamouranis Georgios  
-- Fotakis Andreas
+- Fotakis Andreas https://github.com/andreasfott
 
  
 
